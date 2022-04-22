@@ -2,6 +2,7 @@ package com.zemoso.springdemo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.logging.Logger;
 
 @Entity
 @Table(name = "blog")
@@ -12,6 +13,8 @@ public class Blog {
     private int id;
 
     public Blog() {
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info("Blog Instantiated");
     }
 
     @NotNull(message = "Title is required")

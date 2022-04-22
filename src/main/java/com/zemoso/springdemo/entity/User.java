@@ -2,6 +2,7 @@ package com.zemoso.springdemo.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.logging.Logger;
 
 
 @Entity
@@ -33,7 +34,8 @@ public class User {
     private String role;
 
     public User(){
-
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info("User Instantiated");
     }
 
     public String getUsername() {

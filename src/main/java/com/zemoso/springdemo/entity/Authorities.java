@@ -1,6 +1,7 @@
 package com.zemoso.springdemo.entity;
 
 import javax.persistence.*;
+import java.util.logging.Logger;
 
 
 @Entity
@@ -27,7 +28,8 @@ public class Authorities {
     }
 
     public Authorities(){
-
+        Logger logger = Logger.getLogger(getClass().getName());
+        logger.info("Authorities Instantiated");
     }
 
     public String getUsername() {
