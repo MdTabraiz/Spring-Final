@@ -26,7 +26,7 @@ public class LoginController {
 
     @RequestMapping("/success")
     public void loginPageRedirect(HttpServletRequest request, HttpServletResponse response,
-                                  Authentication authResult) throws IOException, ServletException, IOException {
+                                  Authentication authResult) throws IOException {
 
         String role =  authResult.getAuthorities().toString();
 

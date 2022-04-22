@@ -1,5 +1,6 @@
 package com.zemoso.springdemo.controller;
 
+import com.zemoso.springdemo.constants.Constant;
 import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,14 +44,14 @@ public class BlogUserController {
         theblog.setAuthorName(principal.getName());
         model.addAttribute("theblog",theblog);
 
-        return "user-blog-form";
+        return Constant.USER_BLOG_FORM;
     }
 
     @PostMapping("/save")
     public String saveEmployee(@Valid @ModelAttribute("theblog") Blog blog, BindingResult result){
 
         if(result.hasErrors()){
-            return "user-blog-form";
+            return Constant.USER_BLOG_FORM;
         }else{
             blogService.save(blog);
             return "redirect:/blogs/user/list";
@@ -63,7 +64,7 @@ public class BlogUserController {
 
         model.addAttribute("theblog",blog);
 
-        return "user-blog-form";
+        return Constant.USER_BLOG_FORM;
     }
 
     @GetMapping("/delete")

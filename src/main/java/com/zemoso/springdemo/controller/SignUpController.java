@@ -1,5 +1,6 @@
 package com.zemoso.springdemo.controller;
 
+import com.zemoso.springdemo.constants.Constant;
 import com.zemoso.springdemo.entity.User;
 import com.zemoso.springdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SignUpController {
         User user = new User();
         model.addAttribute("theuser",user);
 
-        return "signup";
+        return Constant.SIGNUP_FORM;
     }
 
     @PostMapping("/save")
@@ -41,12 +42,12 @@ public class SignUpController {
 
 
         if(result.hasErrors()){
-            return "signup";
+            return Constant.SIGNUP_FORM;
         }else if(userService.findUser(user.getUsername())){
             model.addAttribute("userExists","Username Already Exists! " +
                     "Enter different one");
 
-            return "signup";
+            return Constant.SIGNUP_FORM;
         }
         else{
             userService.save(user);

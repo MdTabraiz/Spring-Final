@@ -1,8 +1,6 @@
 package com.zemoso.springdemo.exceptionhandler;
 
 
-import com.zemoso.springdemo.entity.Blog;
-
 public class BlogErrorResponse {
 
     private int status;
