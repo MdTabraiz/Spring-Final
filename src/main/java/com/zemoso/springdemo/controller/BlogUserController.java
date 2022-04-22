@@ -4,6 +4,7 @@ import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,11 +12,12 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/blogs")
-public class BlogController {
+@RequestMapping("/blogs/user")
+public class BlogUserController {
 
     @Autowired
     private BlogService blogService;
@@ -27,29 +29,31 @@ public class BlogController {
     }
 
     @GetMapping("/list")
-    public String listBlogs(Model model){
-        List<Blog> blogs = blogService.findAll();
+    public String blogsList(Model model, Principal principal){
+        List<Blog> blogs = blogService.findByAuthor(principal.getName());
+        List<Blog> allBlogs = blogService.findAll();
         model.addAttribute("blogs",blogs);
-
-        return "blog-list";
+        model.addAttribute("allBlogs",allBlogs);
+        return "user-list";
     }
 
     @GetMapping("/showFormForAdd")
-    public String showFormForAdd(Model model){
+    public String showFormForAdd(Model model,Principal principal){
         Blog theblog = new Blog();
+        theblog.setAuthorName(principal.getName());
         model.addAttribute("theblog",theblog);
 
-        return "blog-form";
+        return "user-blog-form";
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@Valid  @ModelAttribute("theblog") Blog blog, BindingResult result){
+    public String saveEmployee(@Valid @ModelAttribute("theblog") Blog blog, BindingResult result){
 
         if(result.hasErrors()){
-            return "blog-form";
+            return "user-blog-form";
         }else{
             blogService.save(blog);
-            return "redirect:/blogs/list";
+            return "redirect:/blogs/user/list";
         }
     }
     @GetMapping("/showFormForUpdate")
@@ -59,19 +63,14 @@ public class BlogController {
 
         model.addAttribute("theblog",blog);
 
-        return "blog-form";
+        return "user-blog-form";
     }
 
     @GetMapping("/delete")
     public String delete(@RequestParam("blogId") int theId){
 
         blogService.deleteById(theId);
-        return "redirect:/blogs/list";
-    }
-
-    @GetMapping("/showMyLoginPage")
-    public String showLoginPage(){
-        return "login";
+        return "redirect:/blogs/user/list";
     }
 
 }

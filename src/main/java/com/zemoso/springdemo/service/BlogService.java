@@ -12,5 +12,7 @@ public interface BlogService {
 
     public void save(Blog blog);
 
+    public List<Blog> findByAuthor(String name);
+
     public void deleteById(int theId);
 }

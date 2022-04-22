@@ -1,34 +1,53 @@
 package com.zemoso.springdemo.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    private DataSource dataSource;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        User.UserBuilder users = User.withDefaultPasswordEncoder();
-
-        auth.inMemoryAuthentication()
-                .withUser(users.username("john").password("test123").roles("user"))
-                .withUser(users.username("mary").password("test123").roles("user"))
-                .withUser(users.username("user").password("test123").roles("user"));
-
+        auth.jdbcAuthentication().dataSource(dataSource);
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .anyRequest().authenticated()
+                .antMatchers("/blogs/user/**").hasRole("USER")
+                .antMatchers("/blogs/admin/**").hasRole("ADMIN")
                 .and().formLogin().loginPage("/blogs/showMyLoginPage")
-                .loginProcessingUrl("/authenticateTheUser")
-                .permitAll().and().logout().permitAll();
+                .loginProcessingUrl("/authenticateTheUser").defaultSuccessUrl("/blogs/success", true)
+                .permitAll().and().logout().permitAll()
+                .and().exceptionHandling().accessDeniedPage("/blogs/access-denied");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

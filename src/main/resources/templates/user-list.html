@@ -13,41 +13,54 @@
     <hr>
     <table>
         <thead>
-            <th>
-                <h3>Blogs</h3>
-            </th>
-            <th style="
+        <th>
+            <h3>Blogs</h3>
+        </th>
+        <th style="
                     width: 100%;">
-                <form action="#" th:action="@{/logout}" method="POST">
+            <form action="#" th:action="@{/logout}" method="POST">
 
-                    <div style="margin-left: 90%;">
-                        <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
-                        <button type="submit" class="btn btn-info btn-sm" >Logout</button>
-                    </div>
-                </form>
-            </th>
+                <div style="margin-left: 90%;">
+                    <span th:text="${#authentication.getPrincipal().getUsername()}"></span>
+                    <button type="submit" class="btn btn-info btn-sm" > Logout</button>
+                </div>
+            </form>
+        </th>
         </thead>
     </table>
     <hr>
-    <a th:href="@{/blogs/admin/showFormForAdd}"
+    <a th:href="@{/blogs/user/showFormForAdd}"
        class="btn btn-primary btn-sm mb-3">
         Add Blog
     </a>
+    <h3>My Blogs</h3>
     <div class="card" style="width: 95%;"  th:each="tempBlog : ${blogs}">
         <div class="card-body">
-           <h5 class="card-title" th:text="'Title: ' + ${tempBlog.title}"/>
+            <h5 class="card-title" th:text="'Title: ' + ${tempBlog.title}"/>
             <h6 class="card-subtitle mb-2 text-muted" th:text="'Author: ' + ${tempBlog.authorName}"/><br>
             <p class="card-text"  th:text="${tempBlog.content}"/>
 
-            <a th:href="@{/blogs/admin/showFormForUpdate(blogId=${tempBlog.id})}"
+
+            <a th:href="@{/blogs/user/showFormForUpdate(blogId=${tempBlog.id})}"
                class="btn btn-info btn-sm">
                 Update
             </a>
-            <a th:href="@{/blogs/admin/delete(blogId=${tempBlog.id})}"
+            <a th:href="@{/blogs/user/delete(blogId=${tempBlog.id})}"
                class="btn btn-danger btn-sm"
                onclick="if (!(confirm('Are you sure you want to delete this Blog?'))) return false">
                 Delete
             </a>
+
+        </div>
+        <br>
+    </div>
+    <br><br>
+    <h3>All Blogs</h3>
+    <div class="card" style="width: 95%;"  th:each="tempBlog : ${allBlogs}">
+        <div class="card-body">
+            <h5 class="card-title" th:text="'Title: ' + ${tempBlog.title}"/>
+            <h6 class="card-subtitle mb-2 text-muted" th:text="'Author: ' + ${tempBlog.authorName}"/><br>
+            <p class="card-text"  th:text="${tempBlog.content}"/>
 
         </div>
         <br>

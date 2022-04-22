@@ -38,6 +38,11 @@ public class BlogServiceImpl implements BlogService{
     }
 
     @Override
+    public List<Blog> findByAuthor(String name) {
+        return blogRepository.findByAuthorName(name);
+    }
+
+    @Override
     public void deleteById(int theId) {
         blogRepository.deleteById(theId);
     }
