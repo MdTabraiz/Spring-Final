@@ -45,7 +45,6 @@ public class SignUpController {
         if(result.hasErrors()){
             return Constant.SIGNUP_FORM;
         }else if(userService.findUser(user.getUserDtoUsername())){
-            System.out.println(user.getUserDtoUsername());
             model.addAttribute("userExists","Username Already Exists! " +
                     "Enter different one");
 

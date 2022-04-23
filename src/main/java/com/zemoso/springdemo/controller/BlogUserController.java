@@ -2,7 +2,7 @@ package com.zemoso.springdemo.controller;
 
 import com.zemoso.springdemo.constants.Constant;
 import com.zemoso.springdemo.dto.BlogDTO;
-import com.zemoso.springdemo.dto.UserDTO;
+
 import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
