@@ -2,14 +2,18 @@ package com.zemoso.springdemo.dto;
 
 import com.zemoso.springdemo.entity.User;
 
+import javax.validation.constraints.NotNull;
+
 public class UserDTO {
 
+    @NotNull(message = "Username is required")
     private String userDtoUsername;
 
+    @NotNull(message = "Password is required")
     private String userDtoPassword;
 
     private int userDtoEnabled =1;
-
+    @NotNull(message = "Select a Role")
     private String userDtoRole;
 
     public User toEntity(){

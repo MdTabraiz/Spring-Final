@@ -3,11 +3,16 @@ package com.zemoso.springdemo.dto;
 
 import com.zemoso.springdemo.entity.Blog;
 
+import javax.validation.constraints.NotNull;
+
 public class BlogDTO {
 
     private int blogId;
+    @NotNull(message = "Title is required")
     private String blogTitle;
+    @NotNull(message = "Author name is required")
     private String blogAuthorName;
+    @NotNull(message = "Content is required")
     private String blogContent;
 
     public Blog toEntity(){

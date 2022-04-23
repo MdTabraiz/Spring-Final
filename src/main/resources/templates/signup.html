@@ -37,6 +37,7 @@
                    th:field="*{userDtoRole}">
             <label class="custom-control-label" for="option2">ADMIN</label>
         </div>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('userDtoRole')}" th:errors="*{userDtoRole}"></p>
         <br>
         <button type="submit" class="btn btn-info col-2">Save</button>
     </form>
