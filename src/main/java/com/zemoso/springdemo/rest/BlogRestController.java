@@ -1,5 +1,6 @@
 package com.zemoso.springdemo.rest;
 
+import com.zemoso.springdemo.dto.BlogDTO;
 import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.exceptionhandler.BlogNotFoundException;
 import com.zemoso.springdemo.service.BlogService;
@@ -32,13 +33,13 @@ public class BlogRestController {
     }
 
     @PostMapping("/blogs")
-    public void addBlog(@RequestBody Blog blog){
-        blogService.save(blog);
+    public void addBlog(@RequestBody BlogDTO blog){
+        blogService.save(blog.toEntity());
     }
 
     @PutMapping("/blogs")
-    public void updateBlog(@RequestBody Blog blog){
-        blogService.save(blog);
+    public void updateBlog(@RequestBody BlogDTO blog){
+        blogService.save(blog.toEntity());
     }
 
     @DeleteMapping("/blogs/{blogId}")

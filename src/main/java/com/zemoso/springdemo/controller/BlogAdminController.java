@@ -1,6 +1,7 @@
 package com.zemoso.springdemo.controller;
 
 import com.zemoso.springdemo.constants.Constant;
+import com.zemoso.springdemo.dto.BlogDTO;
 import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,12 +47,12 @@ public class BlogAdminController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@Valid  @ModelAttribute("theblog") Blog blog, BindingResult result){
+    public String saveBlog(@Valid  @ModelAttribute("theblog") BlogDTO blog, BindingResult result){
 
         if(result.hasErrors()){
             return Constant.ADMIN_BLOG_FORM;
         }else{
-            blogService.save(blog);
+            blogService.save(blog.toEntity());
             return "redirect:/blogs/admin/master-list";
         }
     }

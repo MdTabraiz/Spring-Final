@@ -1,6 +1,7 @@
 package com.zemoso.springdemo.controller;
 
 import com.zemoso.springdemo.constants.Constant;
+import com.zemoso.springdemo.dto.UserDTO;
 import com.zemoso.springdemo.entity.User;
 import com.zemoso.springdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class SignUpController {
     }
 
     @PostMapping("/save")
-    public String saveEmployee(@Valid @ModelAttribute("theuser")User user,
+    public String saveUser(@Valid @ModelAttribute("theuser") UserDTO user,
                                BindingResult result,Model model){
 
 
@@ -50,7 +51,7 @@ public class SignUpController {
             return Constant.SIGNUP_FORM;
         }
         else{
-            userService.save(user);
+            userService.save(user.toEntity());
             return "redirect:/blogs/showMyLoginPage";
         }
     }

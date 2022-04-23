@@ -1,32 +1,23 @@
-package com.zemoso.springdemo.entity;
+package com.zemoso.springdemo.dto;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.logging.Logger;
 
-@Entity
-@Table(name = "blog")
-public class Blog {
+import com.zemoso.springdemo.entity.Blog;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BlogDTO {
+
     private int id;
-
-    @NotNull(message = "Title is required")
-    @Column(name = "title")
     private String title;
-
-    @NotNull(message = "Author name is required")
-    @Column(name = "author_name")
     private String authorName;
-
-    @NotNull(message = "Content is required")
-    @Column(name = "content")
     private String content;
 
-    public Blog() {
-        Logger logger = Logger.getLogger(getClass().getName());
-        logger.info("Blog Instantiated");
+    public Blog toEntity(){
+        Blog blog = new Blog();
+        blog.setId(this.id);
+        blog.setTitle(this.title);
+        blog.setAuthorName(this.authorName);
+        blog.setContent(this.content);
+
+        return blog;
     }
 
     public int getId() {
