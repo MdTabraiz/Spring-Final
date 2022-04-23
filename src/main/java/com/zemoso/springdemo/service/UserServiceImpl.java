@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserService{
     private String encodePassword(String password){
         String encodedPassword = "";
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        encodedPassword = "{bcrypt}"+bCryptPasswordEncoder.encode(password);
-
+        //encodedPassword = "{bcrypt}"+bCryptPasswordEncoder.encode(password);
+        encodedPassword = bCryptPasswordEncoder.encode(password);
         return encodedPassword;
     }
 }
