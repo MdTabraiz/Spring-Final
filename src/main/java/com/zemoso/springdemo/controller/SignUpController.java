@@ -2,7 +2,7 @@ package com.zemoso.springdemo.controller;
 
 import com.zemoso.springdemo.constants.Constant;
 import com.zemoso.springdemo.dto.UserDTO;
-import com.zemoso.springdemo.entity.User;
+
 import com.zemoso.springdemo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
@@ -31,7 +31,7 @@ public class SignUpController {
     @GetMapping("/showFormForSignup")
     public String showSignupForm(Model model){
 
-        User user = new User();
+        UserDTO user = new UserDTO();
         model.addAttribute("theuser",user);
 
         return Constant.SIGNUP_FORM;
@@ -44,7 +44,8 @@ public class SignUpController {
 
         if(result.hasErrors()){
             return Constant.SIGNUP_FORM;
-        }else if(userService.findUser(user.getUsername())){
+        }else if(userService.findUser(user.getUserDtoUsername())){
+            System.out.println(user.getUserDtoUsername());
             model.addAttribute("userExists","Username Already Exists! " +
                     "Enter different one");
 

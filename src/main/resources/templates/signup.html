@@ -14,27 +14,27 @@
     <hr>
     <form action="#" th:action="@{/blogs/signup/save}" th:object="${theuser}" method="POST">
 
-        <input type="text" th:field="*{username}" placeholder="User Name"
+        <input type="text" th:field="*{userDtoUsername}" placeholder="User Name"
                class="form-control mb-4 col-4">
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('userDtoUsername')}" th:errors="*{userDtoUsername}"></p>
         <div th:if="${userExists!=null}">
             <p class="alert alert-danger" th:text=${userExists}></p>
         </div>
 
 
-        <input type="text" th:field="*{password}"
+        <input type="text" th:field="*{userDtoPassword}"
                placeholder="Password" class="form-control mb-4 col-4">
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('userDtoPassword')}" th:errors="*{userDtoPassword}"></p>
 
         <h6>Role</h6>
         <div class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="option1" name="option1" class="custom-control-input" value="ROLE_USER"
-                   th:field="*{role}">
+                   th:field="*{userDtoRole}">
             <label class="custom-control-label" for="option1">USER</label>
         </div>
         <div class="custom-control custom-radio custom-control-inline">
             <input type="radio" id="option2" name="option2" class="custom-control-input" value="ROLE_ADMIN"
-                   th:field="*{role}">
+                   th:field="*{userDtoRole}">
             <label class="custom-control-label" for="option2">ADMIN</label>
         </div>
         <br>

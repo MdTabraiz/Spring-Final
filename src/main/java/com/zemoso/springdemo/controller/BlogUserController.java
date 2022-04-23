@@ -2,6 +2,7 @@ package com.zemoso.springdemo.controller;
 
 import com.zemoso.springdemo.constants.Constant;
 import com.zemoso.springdemo.dto.BlogDTO;
+import com.zemoso.springdemo.dto.UserDTO;
 import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,7 @@ public class BlogUserController {
     public String blogsList(Model model, Principal principal){
         List<Blog> blogs = blogService.findByAuthor(principal.getName());
         List<Blog> allBlogs = blogService.findAll();
+
         model.addAttribute("blogs",blogs);
         model.addAttribute("allBlogs",allBlogs);
         return "user-list";
@@ -41,9 +43,9 @@ public class BlogUserController {
 
     @GetMapping("/showFormForAdd")
     public String showFormForAdd(Model model,Principal principal){
-        Blog theblog = new Blog();
-        theblog.setAuthorName(principal.getName());
-        model.addAttribute("theblog",theblog);
+        BlogDTO blogDTO = new BlogDTO();
+        blogDTO.setBlogAuthorName(principal.getName());
+        model.addAttribute("theblog",blogDTO);
 
         return Constant.USER_BLOG_FORM;
     }
@@ -62,8 +64,9 @@ public class BlogUserController {
     public String showFormForUpdate(@RequestParam("blogId") int theId, Model model){
 
         Blog blog = blogService.findById(theId);
+        BlogDTO blogDTO = blog.toDto();
 
-        model.addAttribute("theblog",blog);
+        model.addAttribute("theblog",blogDTO);
 
         return Constant.USER_BLOG_FORM;
     }

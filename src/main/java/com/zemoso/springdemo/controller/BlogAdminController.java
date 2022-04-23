@@ -39,8 +39,8 @@ public class BlogAdminController {
 
     @GetMapping("/showFormForAdd")
     public String showFormForAdd(Model model, Principal principal){
-        Blog theblog = new Blog();
-        theblog.setAuthorName(principal.getName());
+        BlogDTO theblog = new BlogDTO();
+        theblog.setBlogAuthorName(principal.getName());
         model.addAttribute("theblog",theblog);
 
         return Constant.ADMIN_BLOG_FORM;
@@ -61,7 +61,9 @@ public class BlogAdminController {
 
         Blog blog = blogService.findById(theId);
 
-        model.addAttribute("theblog",blog);
+        BlogDTO blogDTO = blog.toDto();
+
+        model.addAttribute("theblog",blogDTO);
 
         return Constant.ADMIN_BLOG_FORM;
     }

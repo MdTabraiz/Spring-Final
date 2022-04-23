@@ -5,50 +5,50 @@ import com.zemoso.springdemo.entity.Blog;
 
 public class BlogDTO {
 
-    private int id;
-    private String title;
-    private String authorName;
-    private String content;
+    private int blogId;
+    private String blogTitle;
+    private String blogAuthorName;
+    private String blogContent;
 
     public Blog toEntity(){
         Blog blog = new Blog();
-        blog.setId(this.id);
-        blog.setTitle(this.title);
-        blog.setAuthorName(this.authorName);
-        blog.setContent(this.content);
+        blog.setId(this.blogId);
+        blog.setTitle(this.blogTitle);
+        blog.setAuthorName(this.blogAuthorName);
+        blog.setContent(this.blogContent);
 
         return blog;
     }
 
-    public int getId() {
-        return id;
+    public int getBlogId() {
+        return blogId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setBlogId(int blogId) {
+        this.blogId = blogId;
     }
 
-    public String getTitle() {
-        return title;
+    public String getBlogTitle() {
+        return blogTitle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setBlogTitle(String blogTitle) {
+        this.blogTitle = blogTitle;
     }
 
-    public String getAuthorName() {
-        return authorName;
+    public String getBlogAuthorName() {
+        return blogAuthorName;
     }
 
-    public void setAuthorName(String authorName) {
-        this.authorName = authorName;
+    public void setBlogAuthorName(String blogAuthorName) {
+        this.blogAuthorName = blogAuthorName;
     }
 
-    public String getContent() {
-        return content;
+    public String getBlogContent() {
+        return blogContent;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setBlogContent(String blogContent) {
+        this.blogContent = blogContent;
     }
 }

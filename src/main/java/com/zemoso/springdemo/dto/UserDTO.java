@@ -4,53 +4,53 @@ import com.zemoso.springdemo.entity.User;
 
 public class UserDTO {
 
-    private String username;
+    private String userDtoUsername;
 
-    private String password;
+    private String userDtoPassword;
 
-    private int enabled=1;
+    private int userDtoEnabled =1;
 
-    private String role;
+    private String userDtoRole;
 
     public User toEntity(){
         User user = new User();
-        user.setUsername(this.username);
-        user.setPassword(this.password);
-        user.setEnabled(this.enabled);
-        user.setRole(this.role);
+        user.setUsername(this.userDtoUsername);
+        user.setPassword(this.userDtoPassword);
+        user.setEnabled(this.userDtoEnabled);
+        user.setRole(this.userDtoRole);
 
         return user;
     }
 
-    public String getUsername() {
-        return username;
+    public String getUserDtoUsername() {
+        return userDtoUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setUserDtoUsername(String userDtoUsername) {
+        this.userDtoUsername = userDtoUsername;
     }
 
-    public String getPassword() {
-        return password;
+    public String getUserDtoPassword() {
+        return userDtoPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setUserDtoPassword(String userDtoPassword) {
+        this.userDtoPassword = userDtoPassword;
     }
 
-    public int getEnabled() {
-        return enabled;
+    public int getUserDtoEnabled() {
+        return userDtoEnabled;
     }
 
-    public void setEnabled(int enabled) {
-        this.enabled = enabled;
+    public void setUserDtoEnabled(int userDtoEnabled) {
+        this.userDtoEnabled = userDtoEnabled;
     }
 
-    public String getRole() {
-        return role;
+    public String getUserDtoRole() {
+        return userDtoRole;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setUserDtoRole(String userDtoRole) {
+        this.userDtoRole = userDtoRole;
     }
 }

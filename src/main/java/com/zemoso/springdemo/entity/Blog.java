@@ -1,5 +1,7 @@
 package com.zemoso.springdemo.entity;
 
+import com.zemoso.springdemo.dto.BlogDTO;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.logging.Logger;
@@ -27,6 +29,15 @@ public class Blog {
     public Blog() {
         Logger logger = Logger.getLogger(getClass().getName());
         logger.info("Blog Instantiated");
+    }
+
+    public BlogDTO toDto(){
+        BlogDTO blogDTO = new BlogDTO();
+        blogDTO.setBlogId(this.id);
+        blogDTO.setBlogTitle(this.title);
+        blogDTO.setBlogContent(this.content);
+        blogDTO.setBlogAuthorName(this.authorName);
+        return blogDTO;
     }
 
     public int getId() {

@@ -17,19 +17,19 @@
     <form action="#" th:action="@{/blogs/admin/save}"
           th:object="${theblog}" method="POST">
 
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" th:field="*{blogId}"/>
 
-        <input type="text" th:field="*{title}" placeholder="Title"
+        <input type="text" th:field="*{blogTitle}" placeholder="Title"
                class="form-control mb-4 col-4">
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></p>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('blogTitle')}" th:errors="*{blogTitle}"></p>
 
-        <input type="text" th:field="*{authorName}"
+        <input type="text" th:field="*{blogAuthorName}"
                placeholder="Author Name" class="form-control mb-4 col-4" th:readonly="true">
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('authorName')}" th:errors="*{authorName}"></p>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('blogAuthorName')}" th:errors="*{blogAuthorName}"></p>
 
-        <textarea style="white-space: pre" class="form-control" th:field="*{content}" id="exampleFormControlTextarea1"
+        <textarea style="white-space: pre" class="form-control" th:field="*{blogContent}" id="exampleFormControlTextarea1"
                   placeholder="Content" rows="10"/><br>
-        <p class="alert alert-danger" th:if="${#fields.hasErrors('content')}" th:errors="*{content}"></p>
+        <p class="alert alert-danger" th:if="${#fields.hasErrors('blogContent')}" th:errors="*{blogContent}"></p>
 
         <button type="submit" class="btn btn-info col-2">Save</button>
     </form>
