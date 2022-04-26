@@ -43,13 +43,14 @@ class BlogServiceTest {
         blog.setContent("Test Content");
 
         blogs.add(blog);
-       Mockito.when(blogRepository.findAll()).thenReturn(blogs);
 
-       List<Blog> allBlogs = blogService.findAll();
+        Mockito.when(blogRepository.findAll()).thenReturn(blogs);
 
-       Mockito.verify(blogRepository).findAll();
+        List<Blog> allBlogs = blogService.findAll();
 
-       Assertions.assertEquals(blogs,allBlogs);
+        Mockito.verify(blogRepository).findAll();
+
+        Assertions.assertEquals(blogs,allBlogs);
     }
 
     @Test
@@ -88,6 +89,37 @@ class BlogServiceTest {
 
     @Test
     void testFindByAuthor(){
+        List<Blog> blogs = new ArrayList<>();
+        Blog blog = new Blog();
+
+        blog.setId(1);
+        blog.setTitle("Test Title");
+        blog.setAuthorName("Test Author");
+        blog.setContent("Test Content");
+
+        blogs.add(blog);
+
+        Mockito.when(blogRepository.findByAuthorName("Test Author")).thenReturn(blogs);
+
+        List<Blog> authorBlogs = blogService.findByAuthor("Test Author");
+
+        Mockito.verify(blogRepository).findByAuthorName("Test Author");
+
+        Assertions.assertEquals(blogs,authorBlogs);
+
+    }
+
+    @Test
+    void testDelete(){
+
+        Blog blog = new Blog();
+        blog.setId(1);
+        blog.setTitle("Test Title");
+        blog.setAuthorName("Test Author");
+        blog.setContent("Test Content");
+
+       blogService.deleteById(1);
+       Mockito.verify(blogRepository).deleteById(1);
 
     }
 
