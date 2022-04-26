@@ -3,6 +3,7 @@ package com.zemoso.springdemo.service;
 import com.zemoso.springdemo.dao.BlogRepository;
 import com.zemoso.springdemo.entity.Blog;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -22,6 +23,7 @@ class BlogServiceTest {
     private BlogRepository blogRepository;
 
 
+    @BeforeEach
     void setUp() throws Exception{
         MockitoAnnotations.openMocks(this);
     }
