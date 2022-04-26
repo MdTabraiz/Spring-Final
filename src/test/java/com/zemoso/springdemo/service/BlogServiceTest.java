@@ -11,6 +11,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
@@ -26,6 +28,28 @@ class BlogServiceTest {
     @BeforeEach
     void setUp() throws Exception{
         MockitoAnnotations.openMocks(this);
+    }
+
+
+    @Test
+    void testFindAll(){
+
+        List<Blog> blogs = new ArrayList<>();
+        Blog blog = new Blog();
+
+        blog.setId(1);
+        blog.setTitle("Test Title");
+        blog.setAuthorName("Test Author");
+        blog.setContent("Test Content");
+
+        blogs.add(blog);
+       Mockito.when(blogRepository.findAll()).thenReturn(blogs);
+
+       List<Blog> allBlogs = blogService.findAll();
+
+       Mockito.verify(blogRepository).findAll();
+
+       Assertions.assertEquals(blogs,allBlogs);
     }
 
     @Test
@@ -44,6 +68,26 @@ class BlogServiceTest {
         Assertions.assertEquals("Test Title",userBlog.getTitle());
         Assertions.assertEquals("Test Author",userBlog.getAuthorName());
         Assertions.assertEquals("Test Content",userBlog.getContent());
+
+    }
+
+    @Test
+    void testSave(){
+        Blog blog = new Blog();
+        blog.setId(1);
+        blog.setTitle("Test Title");
+        blog.setAuthorName("Test Author");
+        blog.setContent("Test Content");
+
+        Mockito.when(blogRepository.save(blog)).thenReturn(blog);
+
+        blogService.save(blog);
+
+        Mockito.verify(blogRepository).save(blog);
+    }
+
+    @Test
+    void testFindByAuthor(){
 
     }
 
