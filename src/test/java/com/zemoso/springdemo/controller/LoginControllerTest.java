@@ -38,19 +38,19 @@ class LoginControllerTest {
     }
 
 
-    @Test
-    @WithMockUser(username = "admin",password = "password",authorities ={"ADMIN,USER"} )
-    void loginPageRedirect() throws Exception{
-        Authentication authentication = Mockito.mock(Authentication.class);
-
-        Collection authorities = Collections.emptyList();
-
-        Mockito.when(authentication.getAuthorities()).thenReturn(authorities);
-
-        this.mockMvc.perform(get("/blogs/success"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("/blogs/user/list"));
-    }
+//    @Test
+//    @WithMockUser(username = "admin",password = "password",authorities ={"ADMIN,USER"} )
+//    void loginPageRedirect() throws Exception{
+//        Authentication authentication = Mockito.mock(Authentication.class);
+//
+//        Collection authorities = Collections.emptyList();
+//
+//        Mockito.when(authentication.getAuthorities()).thenReturn(authorities);
+//
+//        this.mockMvc.perform(get("/blogs/success"))
+//                .andExpect(status().isOk())
+//                .andExpect(view().name("/blogs/user/list"));
+//    }
 
 
 
