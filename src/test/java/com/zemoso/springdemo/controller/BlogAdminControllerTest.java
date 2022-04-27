@@ -1,12 +1,17 @@
 package com.zemoso.springdemo.controller;
 
 
+import com.zemoso.springdemo.dao.BlogRepository;
+import com.zemoso.springdemo.dto.BlogDTO;
+import com.zemoso.springdemo.dto.UserDTO;
+import com.zemoso.springdemo.entity.Blog;
 import com.zemoso.springdemo.service.BlogServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,9 +20,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 
+import java.security.Principal;
+import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasProperty;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -39,12 +50,18 @@ class BlogAdminControllerTest {
     @InjectMocks
     private BlogAdminController blogAdminController;
 
+    @Mock
+    private BlogRepository blogRepository;
+
+    @Autowired
+    private WebApplicationContext webApplicationContext;
+
 
     @BeforeEach
     public void setup() {
 
         MockitoAnnotations.openMocks(this);
-        //this.mockMvc = MockMvcBuilders.standaloneSetup(this.blogAdminController).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
@@ -56,50 +73,35 @@ class BlogAdminControllerTest {
     }
 
     @Test
-    @WithMockUser(username = "admin",password = "password",roles = {"USER"})
-    void testMasterListForUser() throws Exception {
-        this.mockMvc.perform(get("/blogs/admin/master-list"))
-                .andExpect(status().is(403))
-                .andExpect(forwardedUrl("/blogs/access-denied"));
-    }
-
-    @Test
     @WithMockUser(username = "admin",password = "password",roles = {"ADMIN"})
-    void testShowFormForAdd() throws Exception {
+    void testShowFormForUpdate() throws Exception {
 
-        this.mockMvc.perform(get("/blogs/admin/showFormForAdd"))
+        Blog blog = new Blog();
+
+        blog.setId(1);
+        blog.setTitle("Test Title");
+        blog.setAuthorName("Test Author");
+        blog.setContent("Test Content");
+
+        Mockito.when(blogService.findById(1)).thenReturn(blog);
+
+        this.mockMvc.perform(get("/blogs/admin/showFormForUpdate")
+                        .param("blogId","1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("blog-form"));
     }
 
+    @Test
+    void testSaveBlog() throws Exception {
 
-//    @Test
-//    @WithMockUser(username = "admin",password = "password",roles = {"ADMIN"})
-//    void testShowFormForUpdate() throws Exception {
-//
-//        Blog blog = new Blog();
-//
-//        blog.setId(1);
-//        blog.setTitle("Test Title");
-//        blog.setAuthorName("Test Author");
-//        blog.setContent("Test Content");
-//
-//
-//        Mockito.when(blogService.findById(1)).thenReturn(blog);
-//        BlogDTO blogDTO = blog.toDto();
-//
-//        this.mockMvc.perform(get("/blogs/admin/showFormForUpdate")
-//                        .param("blogId","1"))
-//                .andExpect(model().attribute("theblog",hasProperty("blogId",is(blogDTO.getBlogId()))))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("blog-form"));
-//    }
+        BlogDTO blogDTO = new BlogDTO();
+        blogDTO.setBlogId(1);
+        blogDTO.setBlogTitle("Test");
+        blogDTO.setBlogAuthorName("Test");
+        blogDTO.setBlogContent("Test");
 
-//    @Test
-//    @WithMockUser(username = "admin",password = "password",roles = {"ADMIN"})
-//    void testDelete() throws Exception {
-//        this.mockMvc.perform(get("/blogs/admin/delete")
-//                        .param("blogId","0"))
-//                .andExpect(status().is(400));
-//    }
+        this.mockMvc.perform(post("/blogs/admin/save").flashAttr("theblog",blogDTO))
+                .andExpect(redirectedUrl("/blogs/admin/master-list"));
+    }
+
 }
