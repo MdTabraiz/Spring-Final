@@ -18,13 +18,13 @@ public class BlogRestExceptionHandler {
         return new ResponseEntity<>(error,HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<BlogErrorResponse> handleException(Exception exc){
-
-        BlogErrorResponse error = new BlogErrorResponse(
-                HttpStatus.BAD_REQUEST.value(), exc.getMessage(), System.currentTimeMillis()
-        );
-
-        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
-    }
+//    @ExceptionHandler
+//    public ResponseEntity<BlogErrorResponse> handleException(Exception exc){
+//
+//        BlogErrorResponse error = new BlogErrorResponse(
+//                HttpStatus.BAD_REQUEST.value(), exc.getMessage(), System.currentTimeMillis()
+//        );
+//
+//        return new ResponseEntity<>(error,HttpStatus.BAD_REQUEST);
+//    }
 }
