@@ -17,18 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 
-import java.security.Principal;
-import java.util.Optional;
-
-import static org.hamcrest.Matchers.hasProperty;
-import static org.hamcrest.Matchers.is;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -58,10 +57,11 @@ class BlogAdminControllerTest {
 
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception {
 
         MockitoAnnotations.openMocks(this);
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+       mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
     }
 
     @Test
@@ -92,6 +92,7 @@ class BlogAdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin",password = "password",roles = {"ADMIN"})
     void testSaveBlog() throws Exception {
 
         BlogDTO blogDTO = new BlogDTO();
@@ -102,6 +103,15 @@ class BlogAdminControllerTest {
 
         this.mockMvc.perform(post("/blogs/admin/save").flashAttr("theblog",blogDTO))
                 .andExpect(redirectedUrl("/blogs/admin/master-list"));
+    }
+
+    @Test
+    @WithMockUser(username = "admin",password = "password",roles = {"ADMIN"})
+    void testDeleteBlog() throws Exception {
+
+        this.testSaveBlog();
+         this.mockMvc.perform(get("/blogs/admin/delete").param("blogId","1"))
+                .andExpect(status().is(302)).andExpect(redirectedUrl("/blogs/admin/master-list"));
     }
 
 }
