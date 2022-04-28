@@ -1,0 +1,17 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Access Denied</title>
+        <style>
+            .error{
+                    color:red;
+            }
+            </style>
+    </head>
+    <body>
+        <h2 class="error">Access Denied</h2>
+        <p>You are not authorized to access this resources</p>
+        <hr>
+        <a th:href="@{/blogs/showMyLoginPage}">Back to Login</a>
+    </body>
+</html>
