@@ -1,10 +1,12 @@
 package com.zemoso.springdemo.rest;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zemoso.springdemo.dto.BlogDTO;
-import com.zemoso.springdemo.entity.Blog;
+
 import com.zemoso.springdemo.service.BlogService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,16 +15,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.context.WebApplicationContext;
+
+
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,29 +46,34 @@ class BlogRestControllerTest {
     BlogService blogService;
 
 
+    @Autowired
+    private WebApplicationContext context;
+
+
     @BeforeEach
     public void setup() throws Exception {
         MockitoAnnotations.openMocks(this);
-
+        this.testSave();
     }
 
     @Test
-    @WithMockUser(username = "admin",password = "admin",roles = {"ADMIN,USER"})
+    @WithMockUser(username = "admin",password = "admin",roles = "ADMIN")
     void testSave() throws Exception{
         ObjectMapper mapper = new ObjectMapper();
 
-        Map<String,Object> body = new HashMap<>();
-        body.put("id",1);
-        body.put("title","Employee");
-        body.put("authorName","test");
-        body.put("content","Software Engineer");
+        BlogDTO body = new BlogDTO();
+        body.setBlogId(1);
+        body.setBlogTitle("Title");
+        body.setBlogAuthorName("Author");
+        body.setBlogContent("Content");
+
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 
         this.mockMvc.perform(post("/api/blogs")
-               .contentType(MediaType.APPLICATION_JSON)
-                .content(mapper.writeValueAsString(body))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(403))
-                .andExpect(forwardedUrl("/blogs/access-denied"));
+                        .content(mapper.writeValueAsString(body)).
+                        contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk());
     }
 
     @Test
@@ -72,23 +81,41 @@ class BlogRestControllerTest {
         this.mockMvc.perform(get("/api/blogs")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(0)));
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
     @WithMockUser(username = "admin",password = "admin",roles = "ADMIN")
     void testGetBlog() throws Exception {
-        this.mockMvc.perform(get("/api/blogs/1")
+        MvcResult result =this.mockMvc.perform(get("/api/blogs/1")
             .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isNotFound());
+            .andExpect(status().isOk()).andReturn();
+
+        Assertions.assertNotNull(result.getResponse());
+    }
+
+    @Test
+    @WithMockUser(username = "admin",password = "admin",roles = "ADMIN")
+    void testGetBlogNotExists() throws Exception {
+        MvcResult result =this.mockMvc.perform(get("/api/blogs/100")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(404)).andReturn();
     }
 
     @Test
     @WithMockUser(username = "admin",password = "admin",roles = "ADMIN")
     void testDelete() throws Exception{
         this.mockMvc.perform(delete("/api/blogs/1")
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().is(403));
+                        .contentType(MediaType.APPLICATION_JSON).with(csrf()))
+                .andExpect(status().is(200));
+    }
+
+    @Test
+    @WithMockUser(username = "admin",password = "admin",roles = "ADMIN")
+    void testDeleteNotExists() throws Exception{
+        this.mockMvc.perform(delete("/api/blogs/1000")
+                        .contentType(MediaType.APPLICATION_JSON).with(csrf()))
+                .andExpect(status().is(404));
     }
 
 }
